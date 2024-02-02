@@ -1,0 +1,74 @@
+using System;
+
+class QueenStrokes
+{
+    static void Main()
+    {
+        Console.WriteLine("Enter the coordinates of the queen on a chessboard (for example A1):");
+        string userInput = Console.ReadLine().ToUpper(); 
+
+        if (userInput.Length != 2 || !char.IsLetter(userInput[0]) || !char.IsDigit(userInput[1]))
+        {
+            Console.WriteLine("Invalid input. Please enter coordinates in the format, for example, A1.");
+            return;
+        }
+
+        int column = userInput[0] - 'A';
+        int row = int.Parse(userInput[1].ToString()) - 1;
+
+        if (column < 0 || column >= 8 || row < 0 || row >= 8)
+        {
+            Console.WriteLine("Invalid coordinates. Please enter coordinates within the chessboard range.");
+            return;
+        }
+
+        int[,] queenStrokes = GenerateQueenStrokes(row, column);
+
+        Console.WriteLine("Queen strokes matrix:");
+        PrintMatrix(queenStrokes);
+    }
+
+    static int[,] GenerateQueenStrokes(int row, int column)
+    {
+        int[,] matrix = new int[8, 8];
+
+        matrix[row, column] = 9;
+
+
+        MarkStrokes(matrix, row, column, 1, 0); 
+        MarkStrokes(matrix, row, column, -1, 0); 
+        MarkStrokes(matrix, row, column, 0, 1); 
+        MarkStrokes(matrix, row, column, 0, -1); 
+        MarkStrokes(matrix, row, column, 1, 1); 
+        MarkStrokes(matrix, row, column, -1, -1); 
+        MarkStrokes(matrix, row, column, 1, -1); 
+        MarkStrokes(matrix, row, column, -1, 1); 
+
+        return matrix;
+    }
+
+    static void MarkStrokes(int[,] matrix, int row, int column, int rowIncrement, int colIncrement)
+    {
+        int newRow = row + rowIncrement;
+        int newColumn = column + colIncrement;
+
+        while (newRow >= 0 && newRow < 8 && newColumn >= 0 && newColumn < 8)
+        {
+            matrix[newRow, newColumn] = 1;
+            newRow += rowIncrement;
+            newColumn += colIncrement;
+        }
+    }
+
+    static void PrintMatrix(int[,] matrix)
+    {
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                Console.Write($"{matrix[i, j]} ");
+            }
+            Console.WriteLine();
+        }
+    }
+}

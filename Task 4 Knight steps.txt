@@ -1,0 +1,66 @@
+using System;
+
+class KnightSteps
+{
+    static int N = 5;
+    static int[,] chessboard = new int[N, N];
+    static int[] movesX = { 2, 1, -1, -2, -2, -1, 1, 2 };
+    static int[] movesY = { 1, 2, 2, 1, -1, -2, -2, -1 };
+
+    static bool IsValidMove(int x, int y)
+    {
+        return (x >= 0 && x < N && y >= 0 && y < N && chessboard[x, y] == 0);
+    }
+
+    static bool KnightStepsUtil(int x, int y, int moveNumber)
+    {
+        if (moveNumber == N * N)
+            return true;
+
+        for (int i = 0; i < 8; i++)
+        {
+            int nextX = x + movesX[i];
+            int nextY = y + movesY[i];
+
+            if (IsValidMove(nextX, nextY))
+            {
+                chessboard[nextX, nextY] = moveNumber + 1;
+
+                if (KnightStepsUtil(nextX, nextY, moveNumber + 1))
+                    return true;
+
+                chessboard[nextX, nextY] = 0; 
+            }
+        }
+
+        return false;
+    }
+
+    static void KnightStepsSolution()
+    {
+        int startX = 0, startY = 0;
+        chessboard[startX, startY] = 1;
+
+        if (KnightStepsUtil(startX, startY, 1))
+            PrintChessboard();
+        else
+            Console.WriteLine("There is no solution.");
+    }
+
+    static void PrintChessboard()
+    {
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                Console.Write(chessboard[i, j] + "\t");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    static void Main()
+    {
+        KnightStepsSolution();
+    }
+}

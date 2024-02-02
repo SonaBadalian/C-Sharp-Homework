@@ -1,0 +1,59 @@
+using System;
+
+class RandomMatrix
+{
+    static void Main()
+    {
+        Console.Write("Enter the number of rows (N): ");
+        int n = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter the number of columns (M): ");
+        int m = int.Parse(Console.ReadLine());
+
+        if (n <= 0 || m <= 0)
+        {
+            Console.WriteLine("Invalid matrix size. Please enter positive values for rows and columns.");
+            return;
+        }
+
+        int[,] matrix = GenerateRandomMatrix(n, m);
+
+        Console.WriteLine("Random Matrix:");
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                Console.Write(matrix[i, j] + "\t");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    static int[,] GenerateRandomMatrix(int n, int m)
+    {
+        int totalElements = n * m;
+        int[,] matrix = new int[n, m];
+        Random random = new Random();
+
+        int[] uniqueNumbers = new int[totalElements];
+        for (int i = 0; i < totalElements; i++)
+        {
+            uniqueNumbers[i] = i + 1;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                int randomIndex = random.Next(0, totalElements);
+                matrix[i, j] = uniqueNumbers[randomIndex];
+
+                uniqueNumbers[randomIndex] = uniqueNumbers[totalElements - 1];
+                totalElements--;
+            }
+        }
+
+        return matrix;
+    }
+}

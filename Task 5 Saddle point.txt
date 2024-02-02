@@ -1,0 +1,64 @@
+using System;
+
+class SaddlePoint
+{
+    static void Main()
+    {
+        Console.Write("Enter the number of rows (M): ");
+        int m = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter the number of columns (N): ");
+        int n = int.Parse(Console.ReadLine());
+
+        int[,] matrix = new int[m, n];
+
+        Console.WriteLine("Enter matrix elements:");
+
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                Console.Write($"Enter element at position ({i + 1}, {j + 1}): ");
+                matrix[i, j] = int.Parse(Console.ReadLine());
+            }
+        }
+
+        FindSaddlePoint(matrix, m, n);
+    }
+
+    static void FindSaddlePoint(int[,] matrix, int m, int n)
+    {
+        for (int i = 0; i < m; i++)
+        {
+            int maxInRow = matrix[i, 0];
+            int colIndex = 0;
+
+            for (int j = 1; j < n; j++)
+            {
+                if (matrix[i, j] > maxInRow)
+                {
+                    maxInRow = matrix[i, j];
+                    colIndex = j;
+                }
+            }
+
+            bool isSaddlePoint = true;
+            for (int k = 0; k < m; k++)
+            {
+                if (matrix[k, colIndex] < maxInRow)
+                {
+                    isSaddlePoint = false;
+                    break;
+                }
+            }
+
+            if (isSaddlePoint)
+            {
+                Console.WriteLine($"Saddle point found at position ({i + 1}, {colIndex + 1}): {maxInRow}");
+                return;
+            }
+        }
+
+        Console.WriteLine("No saddle point found.");
+    }
+}
